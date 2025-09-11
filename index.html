@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сократ: Філософія і спадщина</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-35px) translateX(-15px); }
+            75% { transform: translateY(-15px) translateX(15px); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease-out;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: titleGlow 3s infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin: 40px 0 25px;
+            color: #0c2461;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #0c2461, #4a69bd, #f6b93b);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        h2.in-view::after {
+            transform: scaleX(1);
+        }
+        
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin: 30px 0 20px;
+            color: #1e3799;
+        }
+        
+        .intro {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: perspective(1000px) rotateX(5deg) translateY(50px);
+            transition: transform 0.8s ease, box-shadow 0.8s ease;
+            opacity: 0;
+        }
+        
+        .intro.in-view {
+            opacity: 1;
+            transform: perspective(1000px) rotateX(0) translateY(0);
+        }
+        
+        .intro:hover {
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+            transform: translateY(-5px);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            background: linear-gradient(to bottom, #0c2461, #4a69bd, #f6b93b);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -4px;
+            border-radius: 10px;
+            animation: timelineGrow 2s ease-out;
+        }
+        
+        @keyframes timelineGrow {
+            from { height: 0; }
+            to { height: 100%; }
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            margin-bottom: 70px;
+            opacity: 0;
+            transform: translateY(80px) scale(0.95);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .timeline-item.in-view {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 80px;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 80px;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 25px 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-left: 5px solid #0c2461;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            border-left: none;
+            border-right: 5px solid #4a69bd;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #e55039;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(229, 80, 57, 0.1);
+            border-radius: 20px;
+        }
+        
+        .quote-section {
+            text-align: center;
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            margin: 70px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+            animation: quotePulse 8s infinite;
+        }
+        
+        @keyframes quotePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        .quote::before, .quote::after {
+            content: """;
+            font-size: 5rem;
+            color: #f6b93b;
+            position: absolute;
+            opacity: 0.7;
+        }
+        
+        .quote::before {
+            top: -15px;
+            left: -50px;
+        }
+        
+        .quote::after {
+            bottom: -50px;
+            right: -50px;
+            transform: rotate(180deg);
+        }
+        
+        .philosophy-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 70px 0;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            padding: 30px;
+            width: 320px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(60px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #0c2461, #4a69bd, #f6b93b);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .card.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-15px) rotate(3deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card h3 {
+            color: #0c2461;
+            border-bottom: 3px solid #f6b93b;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .card:hover h3 {
+            color: #e55039;
+        }
+        
+        .card i {
+            font-size: 3rem;
+            color: #4a69bd;
+            margin-bottom: 20px;
+            display: block;
+            transition: transform 0.5s ease, color 0.5s ease;
+        }
+        
+        .card:hover i {
+            transform: scale(1.2) rotate(10deg);
+            color: #f6b93b;
+        }
+        
+        .interactive-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 70px 0;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            opacity: 0;
+            transform: rotateX(10deg) translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .interactive-section.in-view {
+            opacity: 1;
+            transform: rotateX(0) translateY(0);
+        }
+        
+        .button {
+            background: linear-gradient(to right, #0c2461, #4a69bd);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 15px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .button:hover::before {
+            left: 100%;
+        }
+        
+        .button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(to right, #4a69bd, #0c2461);
+        }
+        
+        .fact-box {
+            background: linear-gradient(135deg, #f6b93b, #e55039);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            transform: perspective(1000px) rotateY(10deg);
+            transition: transform 0.5s ease;
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        .fact-box.show {
+            display: block;
+            animation: factReveal 0.8s ease forwards;
+        }
+        
+        @keyframes factReveal {
+            0% { opacity: 0; transform: perspective(1000px) rotateY(30deg) translateY(30px); }
+            100% { opacity: 1; transform: perspective(1000px) rotateY(0) translateY(0); }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #0c2461, #4a69bd, #f6b93b);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .fade-in.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .quote {
+                font-size: 1.8rem;
+            }
+            
+            .interactive-section {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-bg" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Сократ</h1>
+                <p>469-399 до н.е.</p>
+                <p>Батько західної філософії</p>
+            </div>
+        </header>
+        
+        <section class="intro fade-in">
+            <h2>Філософ, який змінив мислення людства</h2>
+            <p>Сократ — афінський філософ, один із засновників класичної античної філософії. Він не залишив після себе письмових творів, але його ідеї та метод справили величезний вплив на розвиток європейської філософської традиції.</p>
+        </section>
+        
+        <section class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">469 р. до н.е.</div>
+                    <h3>Народження в Афінах</h3>
+                    <p>Сократ народився в Афінах. Його батько був скульптором, а мати — повитухою. Професії батьків вплинули на формування його філософських поглядів.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">~420-ті рр. до н.е.</div>
+                    <h3>Формування методу</h3>
+                    <p>Сократ розробляє свій унікальний метод ведення діалогів — майєвтику, що допомагає "народженню" істини в свідомості співрозмовника.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">399 р. до н.е.</div>
+                    <h3>Суд і страта</h3>
+                    <p>Сократа було звинувачено в "розбещенні молоді" та "нешануванні богів". Засуджено до смерті через прийняття отрути (цикути). Філософ мужньо прийняв смерть, відмовившись від можливості втечі.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="quote-section">
+            <p class="quote">"Я знаю, що нічого не знаю, але інші не знають і цього"</p>
+        </section>
+        
+        <section>
+            <h2 class="fade-in">Філософські концепції Сократа</h2>
+            <div class="philosophy-cards">
+                <div class="card fade-in">
+                    <i class="fas fa-brain"></i>
+                    <h3>Майєвтика</h3>
+                    <p>Мистецтво "повитухи" — допомога в "народженні" істини, вже закладеної в людині, через діалог і навідні питання.</p>
+                </div>
+                
+                <div class="card fade-in">
+                    <i class="fas fa-search"></i>
+                    <h3>Самопізнання</h3>
+                    <p>"Пізнай самого себе" — центральний принцип філософії Сократа, заклик до дослідження власної душі та розуму.</p>
+                </div>
+                
+                <div class="card fade-in">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Інтелектуалізм</h3>
+                    <p>Переконання, що знання — основа доброчесності, і що ніхто не вчиняє зла свідомо, а лише через невідання.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="interactive-section fade-in">
+            <h2>Інтерактивне вивчення спадщини Сократа</h2>
+            <p>Натисніть на кнопки, щоб дізнатися цікаві факти про філософа</p>
+            
+            <button class="button" onclick="showFact(0)">Метод Сократа</button>
+            <button class="button" onclick="showFact(1)">Даймоніон</button>
+            <button class="button" onclick="showFact(2)">Вплив на учнів</button>
+            
+            <div id="factBox" class="fact-box"></div>
+        </section>
+        
+        <section class="quote-section">
+            <p class="quote">"Життя без роздумів не варте того, щоб його прожити"</p>
+        </section>
+        
+        <footer>
+            <p>Презентація філософії Сократа</p>
+            <p>© 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 20 + 5;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        function setupScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in, h2, .card, .intro, .interactive-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        
+                        if (entry.target.tagName === 'H2') {
+                            entry.target.classList.add('in-view');
+                        }
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        const facts = [
+            "Сократ порівнював свій метод з професією матері-повитухи: як вона допомагає народженню дитини, так він допомагає 'народженню' істини в свідомості людини.",
+            "У Сократа був 'даймоніон' — внутрішній голос, який застерігав його від неправильних вчинків. Це не було божеством, а скоріше інтуїцією або моральним чуттям.",
+            "Серед учнів Сократа були Платон, Антісфен, Алківіад, Ксенофонт — люди, що сформували філософські школи і вплинули на подальший розвиток світогляду."
+        ];
+        
+        function showFact(index) {
+            const factBox = document.getElementById('factBox');
+            factBox.textContent = facts[index];
+            factBox.classList.add('show');
+            
+            setTimeout(() => {
+                factBox.classList.remove('show');
+            }, 7000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            setupScrollAnimations();
+        });
+    </script>
+</body>
+</html>
